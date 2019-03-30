@@ -1,0 +1,4 @@
+output/*
+registrations/*
+scans/*
+ground_truth_vertices/*
