@@ -32,4 +32,4 @@ if __name__ == '__main__':
             scan_id = person_id * 10 + pose_id            
             fileName = os.path.join('scans', 'tr_scan_%03d.ply' % scan_id)
             mesh = open3d.read_triangle_mesh(fileName)
-            custom_draw_geometry(mesh)
+            custom_draw_geometry(mesh, person_id, pose_id)
