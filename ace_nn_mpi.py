@@ -107,5 +107,5 @@ def ace_nn_mpi(x, y, ns = 26, epochs = 12, verbose = 1, return_hscore = False):
 if __name__ == '__main__':
     x = np.load('output/0.npx.npy').astype('float')
     y = np.load('output/3.npx.npy').astype('float')
-    pdb.set_trace()
-    #ace_nn_mpi(x, y)
+    #pdb.set_trace()
+    ace_nn_mpi(x, y)
