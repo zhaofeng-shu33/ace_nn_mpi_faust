@@ -11,7 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 from keras import backend as K
 import numpy as np
 
-
+import pdb
 def neg_hscore(x):
     """
     negative hscore calculation
@@ -105,6 +105,7 @@ def ace_nn_mpi(x, y, ns = 26, epochs = 12, verbose = 1, return_hscore = False):
     return (t_x, t_y)
  
 if __name__ == '__main__':
-    x = np.loads('output/0.npx.npy')
-    y = np.loads('output/3.npx.npy')
-    ace_nn_mpi(x, y)
+    x = np.load('output/0.npx.npy').astype('float')
+    y = np.load('output/3.npx.npy').astype('float')
+    pdb.set_trace()
+    #ace_nn_mpi(x, y)
