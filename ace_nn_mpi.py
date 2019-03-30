@@ -53,7 +53,7 @@ def ace_nn_mpi(x, y, ns = 26, epochs = 12, verbose = 1, return_hscore = False):
     '''
     
     batch_size = 20
-    hidden_layer_num = 32
+    hidden_layer_num = 64
     fdim = ns 
     gdim = fdim
     activation_function = 'relu'
@@ -105,7 +105,12 @@ def ace_nn_mpi(x, y, ns = 26, epochs = 12, verbose = 1, return_hscore = False):
     return (t_x, t_y)
  
 if __name__ == '__main__':
-    x = np.load('output/0.npx.npy').astype('float')
-    y = np.load('output/3.npx.npy').astype('float')
-    #pdb.set_trace()
-    ace_nn_mpi(x, y)
+    sim_matrix = np.zeros([10,10])
+    for i in range(10):
+        for j in range(i+1, 10):
+            x = np.load('output/%d.npx.npy'%i).astype('float')
+            y = np.load('output/%d.npx.npy'%j).astype('float')
+            # pdb.set_trace()
+            h_score = ace_nn_mpi(x, y, return_hscore=True, epochs=24)
+            sim_matrix[i,j] = h_score
+    np.save('sim_matrix', sim_matrix)
