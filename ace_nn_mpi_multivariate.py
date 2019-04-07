@@ -98,11 +98,15 @@ def ace_nn_mpi_multivariate(x_list, ns = 26, epochs = 12, verbose = 1):
         batch_size = batch_size, epochs = epochs)
     # after fitting, calculate pairewise hscore numerically.
     h_score_matrix = np.zeros([class_num, class_num])
-    for i in range(len(class_num)):
-        for j in range(i+1, len(class_num)):
-            loss_f = Lambda(neg_hscore)([feature_tensor_list[i], feature_tensor_list[j]])
-            model_f = Model(inputs = [input_tensor_list[i], input_tensor_list[j]], outputs = loss_f)
-            h_score_matrix[i, j] = model_f.predict([x_internal_list[i], x_internal_list[j]])
+    for i in range(class_num):
+        for j in range(i+1, class_num):
+            model_f = Model(inputs = input_tensor_list[i], outputs = feature_tensor_list[i])
+            model_g = Model(inputs = input_tensor_list[j], outputs = feature_tensor_list[j])
+            feature_f = model_f.predict(x_internal_list[i])
+            feature_g = model_g.predict(x_internal_list[j])
+            tensor_result = neg_hscore([tf.convert_to_tensor(feature_f), tf.convert_to_tensor(feature_g)])
+            sess = tf.Session()
+            h_score_matrix[i, j] = sess.run(tensor_result)
     return h_score_matrix + h_score_matrix.T
 
 if __name__ == '__main__':
@@ -111,5 +115,5 @@ if __name__ == '__main__':
     for i in range(POSE_NUM):
         x = np.load('output/%d.npx.npy'%i).astype('float')
         x_list.append(x)
-    sim_matrix = ace_nn_mpi_multivariate(x_list)
+    sim_matrix = ace_nn_mpi_multivariate(x_list, epochs = 1)
     np.save('sim_matrix_multi', sim_matrix)
